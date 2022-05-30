@@ -14,6 +14,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import static Client.Client.ServerIP;
+import static Client.UnicodeToString.decodeUnicode;
+import static Client.UnicodeToString.unicodeToString;
 
 public class LIBRARY extends JFrame {
     private JPanel contentPane;  //私有成员
@@ -86,6 +88,7 @@ public class LIBRARY extends JFrame {
                 //先清空显示区域
                 bookInfo.setText("");
                 String messageFromSever="";
+                String message="";//de unicode
                 String requestToServer="";//发送的查询请求
                 String sort=(String)comboBox.getSelectedItem();//获取请求种类
                 System.out.println("?");
@@ -112,7 +115,8 @@ public class LIBRARY extends JFrame {
                         if(Client.send(requestToServer,socket)){
                             System.out.println("成功发送给service"+requestToServer+"\n");
                             messageFromSever = Client.receive(socket);
-                            System.out.println("从service收到的消息"+messageFromSever);
+                            message=decodeUnicode(messageFromSever);
+                            System.out.println("从service收到的消息"+message);
                             socket.close();
                         };
 
@@ -123,8 +127,8 @@ public class LIBRARY extends JFrame {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
-                    System.out.println(messageFromSever);
-                    bookInfo.append(messageFromSever);
+
+                    bookInfo.append(message);
                 }
 
             }

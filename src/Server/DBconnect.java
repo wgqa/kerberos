@@ -1,5 +1,6 @@
 package Server;
 
+        import javax.naming.Name;
         import javax.swing.*;
         import java.awt.*;
         import java.sql.Connection;
@@ -138,7 +139,7 @@ public class DBconnect {
             }//end finally try
         }//end try
       //  System.out.println("Goodbye!");
-    }//end main//原文出自【易百教程】，商业转载请联系作者获得授权，非商业请保留原文链接：https://www.yiibai.com/jdbc/jdbc-select-records.html
+    }//end main
 
     public static Connection connect() {
         Statement stat = null;
@@ -188,8 +189,80 @@ public class DBconnect {
         return conn;
     }
 
+    public boolean log(Statement stat,String mID,String pw) throws SQLException{
+        String password;
+        String sql="SELECT name,password FROM user where name = \""+mID+"\"";
+        try{
+            ResultSet rs=stat.executeQuery(sql);//返回结果集
+            while(rs.next()){//指针向后移动
+                password = rs.getString("password");
+                if(password.equals(pw)){
+                    return true;
+                }
+            }
+            rs.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+    public String selectByName(Statement stat,String bookName) throws SQLException{
+        String result="";
+        String sql="SELECT Nam, Author, Publisher, Total, Remain, Borrowtimes FROM books where Nam = \""+ bookName +"\"";
+        ResultSet rs=stat.executeQuery(sql);//返回结果集
+        while(rs.next()) {//指针向后移动
+            String Nam = rs.getString("Nam");
+            String Author = rs.getString("Author");
+            String Publisher = rs.getString("Publisher");
+            String Total = rs.getString("Total");
+            String Remain =rs.getString("Remain");
+            String Borrowtimes =rs.getString("Borrowtimes");
+            result = result + "名称:"+Nam+" 作者:"+Author+" 出版商:"+Publisher+" 总数:"+Total+" 剩余数量:"+Remain+" 借阅次数:"+Borrowtimes+"\n";
+            //result = result + rs.getString();
+        }
+        rs.close();
+        return result;
+    }
 
+    public String selectByPublisher(Statement stat,String publisher) throws SQLException{
+        String result="";
+        String sql="SELECT Nam, Author, Publisher, Total, Remain, Borrowtimes FROM books where Publisher = \""+ publisher +"\"";
+        ResultSet rs=stat.executeQuery(sql);//返回结果集
+        while(rs.next()) {//指针向后移动
+            String Nam = rs.getString("Nam");
+            String Author = rs.getString("Author");
+            String Publisher = rs.getString("Publisher");
+            String Total = rs.getString("Total");
+            String Remain =rs.getString("Remain");
+            String Borrowtimes =rs.getString("Borrowtimes");
+            result = result + "名称:"+Nam+" 作者:"+Author+" 出版商:"+Publisher+" 总数:"+Total+" 剩余数量:"+Remain+" 借阅次数:"+Borrowtimes+"\n";
+            //result = result + rs.getString();
+        }
+        rs.close();
+        return result;
+    }
+
+    public String selectByAuthor(Statement stat,String author) throws SQLException{
+        String result="";
+        String sql="SELECT Nam, Author, Publisher, Total, Remain, Borrowtimes FROM books where Author = \""+ author +"\"";
+        ResultSet rs=stat.executeQuery(sql);//返回结果集
+        while(rs.next()) {//指针向后移动
+            String Nam = rs.getString("Nam");
+            String Author = rs.getString("Author");
+            String Publisher = rs.getString("Publisher");
+            String Total = rs.getString("Total");
+            String Remain =rs.getString("Remain");
+            String Borrowtimes =rs.getString("Borrowtimes");
+            result = result + "名称:"+Nam+" 作者:"+Author+" 出版商:"+Publisher+" 总数:"+Total+" 剩余数量:"+Remain+" 借阅次数:"+Borrowtimes+"\n";
+            //result = result + rs.getString();
+        }
+        rs.close();
+        return result;
+    }
 
 }
+
+
+
 

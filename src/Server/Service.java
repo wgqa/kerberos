@@ -4,9 +4,15 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
+
+import static Server.StringToUnicode.gbEncoding;
+import static Server.StringToUnicode.stringToUnicode;
 
 public class Service {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         boolean flag =true;
         while(flag){
             ServerSocket serverSocket = new ServerSocket(1231);
@@ -31,9 +37,37 @@ public class Service {
 
             String messageFromClient =null;
             String messageToClient="";
+
+            String[] messageFromClient1 =null;
+            String[] messageFromClient2 =null;
+
+            DBconnect db = new DBconnect();
+            Statement stat = db.connect().createStatement();
+
             while((messageFromClient=br.readLine())!=null){//循环读取客户端的信息
                 System.out.println("客户端发送过来的信息" + messageFromClient);
-                messageToClient=messageFromClient+"经过sql处理";//这里改成sql查询的结果
+
+                 if(messageFromClient.charAt(0)=='1'){
+                     messageFromClient=messageFromClient.substring(1,messageFromClient.length());
+                     messageToClient=db.selectByName(stat,messageFromClient);
+                 }
+
+                if(messageFromClient.charAt(0)=='2'){
+                    messageFromClient=messageFromClient.substring(1,messageFromClient.length());
+                    messageToClient=db.selectByPublisher(stat,messageFromClient);
+                }
+
+                if(messageFromClient.charAt(0)=='3'){
+                    messageFromClient=messageFromClient.substring(1,messageFromClient.length());
+                    messageToClient=db.selectByAuthor(stat,messageFromClient);
+                }
+
+                if(messageToClient.equals("")){
+                    System.out.println("没找符合要求的书");
+                    messageToClient="没找符合要求的书";
+                }
+                System.out.println("发送的信息："+messageToClient);
+                messageToClient=gbEncoding(messageToClient);
                 OutputStream outputStream = socket.getOutputStream();
                 socket.getOutputStream().write(messageToClient.getBytes("UTF-8"));
             }
