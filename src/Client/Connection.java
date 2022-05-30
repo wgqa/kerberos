@@ -123,6 +123,7 @@ public class Connection {
             if(stringBuilder.toString().equals("")){
                 System.out.println("收到的包为空！");
             }
+            messageReceiveEncrypted = stringBuilder.toString();
             packetFromAS = packetAnalyse(stringBuilder.toString(),"");
             /*************验证从AS收到的包是否合法**************************/
             String time1 = BinaryToString(packetFromAS.getTimeStamp());//时间戳
@@ -138,7 +139,7 @@ public class Connection {
                 System.out.println("时间戳非法，停止认证");
             }
             /*************验证从AS收到的包是否合法**************************/
-
+            messageReceiveDecrypted = packetFromAS.getHead().headOutput()+packetFromAS.packageOutput();
             System.out.println("从AS收到的包"+packetFromAS.toString());
             inputStream.close();
             outputStream.close();
@@ -192,6 +193,7 @@ public class Connection {
                 stringBuilder.append(new String(bytes, 0, len, "UTF-8"));
             }
             System.out.println("从TGS收到的内容为: " + stringBuilder);
+            messageReceiveEncrypted = stringBuilder.toString();
             packetFromTGS = packetAnalyse(stringBuilder.toString(),packetFromAS.getSessionKey());
             /***********************判断tgs 发来的包的时间戳**************************************/
             String time1 = BinaryToString(packetFromAS.getTimeStamp());//时间戳
@@ -206,6 +208,7 @@ public class Connection {
             else{
                 System.out.println("时间戳非法，停止认证");
             }
+            messageReceiveDecrypted = packetFromTGS.getHead().headOutput()+packetFromTGS.packageOutput();
             inputStream.close();
             outputStream.close();
             socket.close();
