@@ -60,6 +60,15 @@ public class LIBRARY extends JFrame {
         bookInfo.setBounds(100,100,1000,500);
         bookInfo.setBackground(Color.gray);
 
+//        JScrollPane scrollPane = new JScrollPane(bookInfo);
+//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//        scrollPane.setVisible(true);
+        //contentPane.add(scrollPane);
+        contentPane.setVisible(true);
+
+
+
+
         //下拉选项
         JComboBox comboBox = new JComboBox();
         comboBox.setBounds(10,30,120,30);
