@@ -149,17 +149,17 @@ public class MainWindow extends JFrame {
         scrollPane.setViewportView(messageOnScreen);
 
 
-        //实现注册和登录按钮
-        JButton signup =new JButton("注册");
-        signup.setBounds(296, 98, 72, 27);
-        signup.setFont(new Font("仿宋", Font.PLAIN, 18));
-        signup.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                SIGNUP frame1=new SIGNUP();
-                frame1.setVisible(true);
-            }
-        });
+//        //实现注册和登录按钮
+//        JButton signup =new JButton("注册");
+//        signup.setBounds(296, 98, 72, 27);
+//        signup.setFont(new Font("仿宋", Font.PLAIN, 18));
+//        signup.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                dispose();
+//                SIGNUP frame1=new SIGNUP();
+//                frame1.setVisible(true);
+//            }
+//        });
         //注册会关闭主窗口怎么解决
 
         JButton login = new JButton("登录");
