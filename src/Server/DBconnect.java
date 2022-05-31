@@ -209,7 +209,7 @@ public class DBconnect {
 
     public String selectByName(Statement stat,String bookName) throws SQLException{
         String result="";
-        String sql="SELECT Nam, Author, Publisher, Total, Remain, Borrowtimes FROM books where Nam = \""+ bookName +"\"";
+        String sql="SELECT Nam, Author, Publisher, Total, Remain, Borrowtimes FROM books where Nam like \"%"+ bookName +"%\"";
         ResultSet rs=stat.executeQuery(sql);//返回结果集
         while(rs.next()) {//指针向后移动
             String Nam = rs.getString("Nam");
@@ -227,7 +227,7 @@ public class DBconnect {
 
     public String selectByPublisher(Statement stat,String publisher) throws SQLException{
         String result="";
-        String sql="SELECT Nam, Author, Publisher, Total, Remain, Borrowtimes FROM books where Publisher = \""+ publisher +"\"";
+        String sql="SELECT Nam, Author, Publisher, Total, Remain, Borrowtimes FROM books where Publisher like \"%"+ publisher +"%\"";
         ResultSet rs=stat.executeQuery(sql);//返回结果集
         while(rs.next()) {//指针向后移动
             String Nam = rs.getString("Nam");
@@ -245,7 +245,7 @@ public class DBconnect {
 
     public String selectByAuthor(Statement stat,String author) throws SQLException{
         String result="";
-        String sql="SELECT Nam, Author, Publisher, Total, Remain, Borrowtimes FROM books where Author = \""+ author +"\"";
+        String sql="SELECT Nam, Author, Publisher, Total, Remain, Borrowtimes FROM books where Author like \"%"+ author +"%\"";
         ResultSet rs=stat.executeQuery(sql);//返回结果集
         while(rs.next()) {//指针向后移动
             String Nam = rs.getString("Nam");
