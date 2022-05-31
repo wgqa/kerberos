@@ -74,8 +74,8 @@ public class Connection {
             //String message = packetToAS.toString()+"\n"+Client.packetToBinary(packetToAS);
             System.out.println("发送的给AS的packet为"+packetToAS.toString());
             //message =Client.packetToBinary(packetToAS);
-            //messageSendUnencrypted = packetToAS.getHead().headOutput() + packetToAS.packageOutput();
-            messageSendUnencrypted = packetToAS.toString();
+            messageSendUnencrypted = packetToAS.getHead().headOutput() + packetToAS.packageOutput();
+            //messageSendUnencrypted = packetToAS.toString();
             System.out.println("发送给AS的报文为"+messageSendUnencrypted);
             socket.getOutputStream().write(messageSendUnencrypted.getBytes("UTF-8"));
 
