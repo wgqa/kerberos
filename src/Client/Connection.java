@@ -53,36 +53,9 @@ public class Connection {
 //       connectToServer(p);
     }
 
-    //通用收发工具
-    public static boolean send(String host, int port, String message) {
-        try {
-
-            // 与服务端建立连接
-            Socket socket = new Socket(host, port);
-
-            // 建立连接后获得输出流
-            OutputStream outputStream = socket.getOutputStream();
 
 
-            outputStream.write(message.getBytes("UTF-8"));
 
-
-            socket.shutdownOutput();
-
-
-            outputStream.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-
-    public static String receive(Socket socket) {
-        return null;
-    }
-
-    ;
 
     public static Packet connectToAS(String clientID ) {
         Packet  packetFromAS = new Packet();
@@ -101,7 +74,8 @@ public class Connection {
             //String message = packetToAS.toString()+"\n"+Client.packetToBinary(packetToAS);
             System.out.println("发送的给AS的packet为"+packetToAS.toString());
             //message =Client.packetToBinary(packetToAS);
-            messageSendUnencrypted = packetToAS.getHead().headOutput() + packetToAS.packageOutput();
+            //messageSendUnencrypted = packetToAS.getHead().headOutput() + packetToAS.packageOutput();
+            messageSendUnencrypted = packetToAS.toString();
             System.out.println("发送给AS的报文为"+messageSendUnencrypted);
             socket.getOutputStream().write(messageSendUnencrypted.getBytes("UTF-8"));
 
@@ -174,7 +148,8 @@ public class Connection {
             System.out.println("从AS中获取的ticket为"+packetFromAS.getTicket().toString());
             Packet packetToTGS = clientToTGS(packetFromAS.getclientID(), "SERV", packetFromAS.getTicket(), Client.generateAuth(packetFromAS.getclientID(), ipToBinary(address), packetFromAS.getSessionKey()));
 
-            messageSendUnencrypted = packetToTGS.getHead().headOutput() + packetToTGS.packageOutput();
+            //messageSendUnencrypted = packetToTGS.getHead().headOutput() + packetToTGS.packageOutput();
+            messageSendUnencrypted = packetToTGS.toString();
             //加密  加密auth部分 auth用as生成的sessionkey加密 client获得sessionkey的地方是中间段，但是发给tgs的不包含此部分了，tgs能解密ticket从ticket中获取
             messageSendEncrypted = packetToTGS.getHead().headOutput() +packetToTGS.packageOutput2()+ DES.encrypt(packetToTGS.getAuth().AuthOutput(),packetFromAS.getSessionKey()); ;
             System.out.println("发送给TGS的报文内容："+messageSendEncrypted);
@@ -208,7 +183,8 @@ public class Connection {
             else{
                 System.out.println("时间戳非法，停止认证");
             }
-            messageReceiveDecrypted = packetFromTGS.getHead().headOutput()+packetFromTGS.packageOutput();
+            //messageReceiveDecrypted = packetFromTGS.getHead().headOutput()+packetFromTGS.packageOutput();
+            messageReceiveDecrypted = packetFromTGS.toString();
             inputStream.close();
             outputStream.close();
             socket.close();
@@ -241,7 +217,8 @@ public class Connection {
             //String clientID,DataStruct.Ticket ticketServer, DataStruct.Authenticator authServer
             Packet packetToServer = clientToServer(packetFromAS.getclientID(), packetFromTGS.getTicket(),Client.generateAuth(packetFromAS.getclientID(), ipToBinary(address), packetFromTGS.getSessionKey()));
             //String message = packetToAS.toString()+"\n"+Client.packetToBinary(packetToAS);
-            messageSendUnencrypted =packetToServer.getHead().headOutput()+packetToServer.packageOutput();
+            //messageSendUnencrypted =packetToServer.getHead().headOutput()+packetToServer.packageOutput();
+            messageSendUnencrypted =packetToServer.toString();
             messageSendEncrypted = packetToServer.getHead().headOutput()+packetToServer.packageOutput2()+ Des.DES.encrypt(packetToServer.getAuth().AuthOutput(),packetFromTGS.getSessionKey());//使用tgs发来的ticket v 的sessionkey加密
             socket.getOutputStream().write(messageSendEncrypted.getBytes("UTF-8"));
             System.out.println("向sever发的包和message是："+packetToServer.toString()+"message"+messageSendEncrypted);
