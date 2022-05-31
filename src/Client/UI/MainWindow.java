@@ -22,7 +22,7 @@ public class MainWindow extends JFrame {
 
     private JPanel contentPane;  //私有成员
     private JTextField username2;
-    private JTextField password2;//加2是防重名
+    private JPasswordField password2;//加2是防重名
     private JTextArea messageOnScreen;
     private JTextArea message1;
     private String sjzMD5 = "c2c9a44fe1541d5af3b26484b38da669";
@@ -45,7 +45,7 @@ public class MainWindow extends JFrame {
 
     //构造函数，在这里写主窗口的参数设置
     public MainWindow(){
-        setTitle("主窗口");
+        setTitle("登陆页面");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//设置默认的退出方式
         setBounds(400, 250, 855, 475);//设置frame大小
 
@@ -67,7 +67,8 @@ public class MainWindow extends JFrame {
         username2.setBounds(129, 164, 176, 24);
         username2.setFont(new Font("仿宋", Font.PLAIN, 18));
         username2.setColumns(10);
-        password2 = new JTextField();
+        password2 = new JPasswordField();
+        password2.setEchoChar('*');
         password2.setBounds(129, 264, 176, 24);
         password2.setFont(new Font("仿宋", Font.PLAIN, 18));
         password2.setColumns(10);
@@ -144,51 +145,7 @@ public class MainWindow extends JFrame {
         messageOnScreen.setForeground(Color.GRAY);
         messageOnScreen.setFont(new Font("仿宋", Font.PLAIN, 18));
         messageOnScreen.setColumns(10);
-        messageOnScreen.append("先创建JTextArea\n" +
-                "由于需要添加JScrollPane，所以JTextArea这里不要添加尺寸大小。\n" +
-                "JTextArea jTextArea=new JTextArea();\n" +
-                "//jTextArea.setPreferredSize(new Dimension(460,150));\n" +
-                "jTextArea.setEditable(false);//设置为不可编辑\n" +
-                "jTextArea.setLineWrap(true);//文字比控件的宽度还长时会自动换行\n" +
-                "jTextArea.setWrapStyleWord(true);//在单词边界换行，而不是粗暴的直接在字符边界换行\n" +
-                "1\n" +
-                "2\n" +
-                "3\n" +
-                "4\n" +
-                "5\n" +
-                "设置JScrollPane\n" +
-                "JScrollPane jScrollPane=new JScrollPane(jTextArea);//jTextArea就不能在设置边界大小了\n" +
-                "jScrollPane.setPreferredSize(new Dimension(460,100));\n" +
-                "jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);\n" +
-                "1\n" +
-                "2\n" +
-                "3\n" +
-                "往上层容器添加此JScrollPane滚动面板即可\n" +
-                "jPanel.add(jScrollPane);\n" +
-                "1\n" +
-                "\n" +
-                "拔牙的萌萌鼠\n" +
-                "关注\n" +
-                "\n" +
-                "1\n" +
-                "\n" +
-                "\n" +
-                "0\n" +
-                "\n" +
-                "2\n" +
-                "\n" +
-                "\n" +
-                "专栏目录\n" +
-                "Java GUI编程：给JTextArea添加滚动条\n" +
-                "理理李的博客\n" +
-                " 4630\n" +
-                "在网上看了好多，也都试了，但是都没有添加成功，后来偶然看到一篇文章，才发现前面的都不对，方法都用错了，怎么能够成功设置滚动条呢 先给个成功设置的图： 原理：JTextArea需要添加到JScrollPanel，然后再把JScrollPanel添加到当前窗口，重点是JTextArea添加到JScrollPanel时不要采用add方法，而是需要scrollPane.setViewportVie...\n" +
-                "JTextArea设置滚动条\n" +
-                "CARROTHWQ的专栏\n" +
-                "\n" +
-                "————————————————\n" +
-                "版权声明：本文为CSDN博主「拔牙的萌萌鼠」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。\n" +
-                "原文链接：https://blog.csdn.net/Harry_Jack/article/details/117257946");
+        messageOnScreen.append("");
         scrollPane.setViewportView(messageOnScreen);
 
 
@@ -223,6 +180,7 @@ public class MainWindow extends JFrame {
 //                String messageReceiveDecrypted = "";
                 if(username2.getText().trim().equals("")||password2.getText().trim().equals("")){
                     System.out.println("用户名或密码为空");
+                    JOptionPane.showMessageDialog(contentPane,"用户名或密码为空");
                     return;
                 }
                 else {
@@ -233,6 +191,7 @@ public class MainWindow extends JFrame {
                         }
                         else{
                             System.out.println("用户名或密码错误！");
+                            JOptionPane.showMessageDialog(contentPane,"用户名或密码错误！");
                             return;
                         }
                     }
@@ -242,6 +201,7 @@ public class MainWindow extends JFrame {
                         }
                         else{
                             System.out.println("用户名或密码错误！");
+                            JOptionPane.showMessageDialog(contentPane,"用户名或密码错误！");
                             return;
                         }
                     }
@@ -251,12 +211,13 @@ public class MainWindow extends JFrame {
                         }
                         else{
                             System.out.println("用户名或密码错误！");
+                            JOptionPane.showMessageDialog(contentPane,"用户名或密码错误！");
                             return;
                         }
                     }
                     else{
                         System.out.println("用户不存在在");
-
+                        JOptionPane.showMessageDialog(contentPane,"用户不存在！");
                         userID = username2.getText();
                         return;
 
@@ -350,7 +311,7 @@ public class MainWindow extends JFrame {
         contentPane.add(password);
         contentPane.add(username2);
         contentPane.add(password2);
-        contentPane.add(signup);
+        //contentPane.add(signup);
         contentPane.add(login);
         //contentPane.add(messageOnScreen); //
 
