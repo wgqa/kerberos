@@ -1,18 +1,24 @@
 package Server;
 
+import Client.UI.LIBRARY;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.interfaces.RSAPublicKey;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 
+import static RSA.RSAUtils.encryptByPublicKey;
+import static RSA.RSAUtils.pubKey0;
 import static Server.StringToUnicode.gbEncoding;
 import static Server.StringToUnicode.stringToUnicode;
 
 public class Service {
-    public static void main(String[] args) throws IOException, SQLException {
+    private static String pubKey="";
+    public static void main(String[] args) throws Exception {
         boolean flag =true;
         while(flag){
             ServerSocket serverSocket = new ServerSocket(1231);
@@ -62,12 +68,18 @@ public class Service {
                     messageToClient=db.selectByAuthor(stat,messageFromClient);
                 }
 
+                if(messageFromClient.charAt(0)=='4'){
+                    pubKey=messageFromClient.substring(1,messageFromClient.length());
+                }
+
                 if(messageToClient.equals("")){
                     System.out.println("没找符合要求的书");
                     messageToClient="没找符合要求的书";
                 }
                 System.out.println("发送的信息："+messageToClient);
                 messageToClient=gbEncoding(messageToClient);
+                //RSAPublicKey pubKey = LIBRARY
+                messageToClient = encryptByPublicKey(messageToClient, pubKey0);
                 OutputStream outputStream = socket.getOutputStream();
                 socket.getOutputStream().write(messageToClient.getBytes("UTF-8"));
             }

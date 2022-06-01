@@ -1,6 +1,7 @@
 package Client.UI;
 
 import Client.Client;
+import RSA.RSAUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,10 +13,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.util.HashMap;
 
 import static Client.Client.ServerIP;
 import static Client.UnicodeToString.decodeUnicode;
 import static Client.UnicodeToString.unicodeToString;
+import static RSA.RSAUtils.decryptByPrivateKey;
+import static RSA.RSAUtils.priKey0;
 
 public class LIBRARY extends JFrame {
     private JPanel contentPane;  //私有成员
@@ -91,16 +98,31 @@ public class LIBRARY extends JFrame {
         search.setBounds(900, 30, 100, 30);
         search.setFont(new Font("仿宋", Font.PLAIN, 18));
         System.out.println("?");
+
+        //要用equals方法判断，不能直接用 ==
+        //先清空显示区域
+        HashMap<String, Object> map = null;
+        try {
+            map = RSAUtils.getKeys();
+        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+            noSuchAlgorithmException.printStackTrace();
+        }
+
+
+
+
         search.addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
-                //要用equals方法判断，不能直接用 ==
-                //先清空显示区域
+
                 bookInfo.setText("");
                 String messageFromSever="";
                 String message="";//de unicode
                 String requestToServer="";//发送的查询请求
                 String sort=(String)comboBox.getSelectedItem();//获取请求种类
                 System.out.println("?");
+
+
 
                 if(searchKey.getText() .trim().equals("")){ ;
                     System.out.println("查询内容不能为空！");
@@ -124,6 +146,7 @@ public class LIBRARY extends JFrame {
                         if(Client.send(requestToServer,socket)){
                             System.out.println("成功发送给service"+requestToServer+"\n");
                             messageFromSever = Client.receive(socket);
+                            message = decryptByPrivateKey(messageFromSever, priKey0);
                             message=decodeUnicode(messageFromSever);
                             System.out.println("从service收到的消息"+message);
                             socket.close();
@@ -135,6 +158,8 @@ public class LIBRARY extends JFrame {
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                     }
 
                     bookInfo.append(message);
