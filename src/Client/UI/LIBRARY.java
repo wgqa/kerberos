@@ -161,7 +161,7 @@ public class LIBRARY extends JFrame {
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
-
+                    bookInfo.append("密文:"+messageFromSever);
                     bookInfo.append(message);
                 }
 

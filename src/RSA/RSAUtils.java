@@ -1,14 +1,17 @@
 package RSA;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.HashMap;
 import javax.crypto.Cipher;
 
@@ -238,6 +241,7 @@ public class RSAUtils {
         RSAPublicKey pubKey = RSAUtils.getPublicKey(modulus, public_exponent);
         RSAPrivateKey priKey = RSAUtils.getPrivateKey(modulus, private_exponent);
         System.out.println("公钥"+pubKey);
+        System.out.println("私钥"+priKey);
         pubKey0=pubKey;
         priKey0=priKey;
         String mi = encryptByPublicKey(ming, pubKey);
