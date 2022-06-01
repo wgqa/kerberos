@@ -28,6 +28,7 @@ import static RSA.getKey.prikey3;
 public class LIBRARY extends JFrame {
     private JPanel contentPane;  //私有成员
     private JTextArea bookInfo;  //显示查询到的信息
+    private JTextArea message1;//报文信息
     private JTextField searchKey;// 查询的关键词
     private JButton search; //查询按钮
     private JButton clear; //清空bookinfo
@@ -50,7 +51,7 @@ public class LIBRARY extends JFrame {
         //组件位置不对是因为没有 setlayout=null
         setTitle("图书馆藏查询系统");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//设置默认的退出方式
-        setBounds(150, 120, 1200, 700);//设置frame大小
+        setBounds(25, 120, 1400, 700);//设置frame大小
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -59,22 +60,51 @@ public class LIBRARY extends JFrame {
         //显示图书信息
         //JScrollPane scrollPane = new JScrollPane();
         //scrollPane.setBounds(437, 48, 366, 358);
-        bookInfo = new JTextArea();
-        bookInfo.setLineWrap(true);//自动换行
-        bookInfo.setEditable(false);
-        bookInfo.setForeground(Color.BLACK);
-        bookInfo.setFont(new Font("仿宋", Font.PLAIN, 18));
-        bookInfo.append("图书信息在这里显示\n");
-        bookInfo.setBounds(100,100,1000,500);
-        bookInfo.setBackground(Color.gray);
+//        bookInfo = new JTextArea();
+//        bookInfo.setLineWrap(true);//自动换行
+//        bookInfo.setEditable(false);
+//        bookInfo.setForeground(Color.BLACK);
+//        bookInfo.setFont(new Font("仿宋", Font.PLAIN, 18));
+//        bookInfo.append("图书信息在这里显示\n");
+//        bookInfo.setBounds(50,100,800,500);
+//        bookInfo.setBackground(Color.gray);
 
 //        JScrollPane scrollPane = new JScrollPane(bookInfo);
 //        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 //        scrollPane.setVisible(true);
         //contentPane.add(scrollPane);
-        contentPane.setVisible(true);
+//        contentPane.setVisible(true);
+        /**************************************/
+        JScrollPane scrollPane2 = new JScrollPane();
+        scrollPane2.setBounds(50,100,800,500);
+        contentPane.add(scrollPane2);
+
+        bookInfo = new JTextArea();
+        bookInfo.setLineWrap(true);
+        bookInfo.setEditable(false);
+        bookInfo.setForeground(Color.GRAY);
+        bookInfo.setFont(new Font("仿宋", Font.PLAIN, 14));
+        bookInfo.setColumns(10);
+        bookInfo.setForeground(Color.BLACK);
+        bookInfo.setBackground(Color.gray);
+        scrollPane2.setViewportView(bookInfo);
+
+        /*******************************************/
 
 
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(860, 100, 500, 500);
+        contentPane.add(scrollPane);
+
+        message1 = new JTextArea();
+        message1.setLineWrap(true);
+        message1.setEditable(false);
+        message1.setForeground(Color.GRAY);
+        message1.setFont(new Font("仿宋", Font.PLAIN, 14));
+        message1.setColumns(10);
+
+        scrollPane.setViewportView(message1);
+        /******************************************/
 
 
         //下拉选项
@@ -117,6 +147,7 @@ public class LIBRARY extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 bookInfo.setText("");
+                message1.setText("");
                 String messageFromSever="";
                 String message="";//de unicode
                 String requestToServer="";//发送的查询请求
@@ -152,14 +183,20 @@ public class LIBRARY extends JFrame {
                             System.out.println("head长度为"+head);
                             String signMessage = messageFromSever.substring(6, 6+Integer.parseInt(head));//加密的签名
                             String trueMessage =messageFromSever.substring(6+Integer.parseInt(head));//加密的报文
-
                             String deSignMessage=decryptByPrivateKey(signMessage, prikey3);//签名解密
+                            message1.append("加密的签名："+signMessage+"\n\n\n");
+                            message1.append("解密的签名："+deSignMessage+"\n\n\n");
+
                             if(deSignMessage.equals(trueMessage)){
-                                System.out.println("签名认证成功！");
+                                System.out.println("签名认证成功！"+"\n\n\n");
+                                message1.append("签名认证成功！"+"\n\n\n");
                             }
                             else{
-                                System.out.println("签名认真失败！");
+                                System.out.println("签名认真失败！"+"\n\n\n");
+                                message1.append("签名认证失败！"+"\n\n\n");
                             }
+
+                            message1.append("加密的报文信息为："+trueMessage+"\n\n\n");
 
 
                             message = decryptByPrivateKey(trueMessage, prikey3);
@@ -177,7 +214,6 @@ public class LIBRARY extends JFrame {
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
-                    bookInfo.append("密文:"+messageFromSever+"\n");
                     bookInfo.append(message);
                 }
 
@@ -191,14 +227,14 @@ public class LIBRARY extends JFrame {
         clear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 bookInfo.setText("");
-
+                message1.setText("");
 
             }
         });
 
 
 
-        contentPane.add(bookInfo);
+        //contentPane.add(bookInfo);
         contentPane.add(searchKey);
         contentPane.add(search);
         contentPane.add(clear);
