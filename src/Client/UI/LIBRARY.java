@@ -147,7 +147,22 @@ public class LIBRARY extends JFrame {
                         if(Client.send(requestToServer,socket)){
                             System.out.println("成功发送给service"+requestToServer+"\n");
                             messageFromSever = Client.receive(socket);
-                            message = decryptByPrivateKey(messageFromSever, prikey3);
+                            //substring 包括头 不包括尾
+                            String head = messageFromSever.substring(0,4);
+                            System.out.println("head长度为"+head);
+                            String signMessage = messageFromSever.substring(4, 4+Integer.parseInt(head));//加密的签名
+                            String trueMessage =messageFromSever.substring(4+Integer.parseInt(head));//加密的报文
+
+                            String deSignMessage=decryptByPrivateKey(signMessage, prikey3);//签名解密
+                            if(deSignMessage.equals(trueMessage)){
+                                System.out.println("签名认证成功！");
+                            }
+                            else{
+                                System.out.println("签名认真失败！");
+                            }
+
+
+                            message = decryptByPrivateKey(trueMessage, prikey3);
                             //message=decodeUnicode(messageFromSever);
                             System.out.println("从service收到的消息"+message);
                             socket.close();

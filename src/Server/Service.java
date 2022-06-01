@@ -19,6 +19,17 @@ import static Server.StringToUnicode.stringToUnicode;
 
 public class Service {
     private static String pubKey="";
+
+    public static String supplement(int n,String str){
+        if(n>str.length()) {
+            int sl=str.length();//string原长度
+            for(int i=0;i<(n-sl);i++) {
+                str="0"+str;
+            }
+        }
+        return str;
+    }
+
     public static void main(String[] args) throws Exception {
         try {
             //1.创建一个服务器端Socket，即ServerSocket，指定绑定的端口，并监听此端口

@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 import static RSA.RSAUtils.encryptByPublicKey;
 import static RSA.getKey.pubkey3;
+import static Server.Service.supplement;
 
 public class ServiceThread extends Thread{
 
@@ -30,6 +31,8 @@ public class ServiceThread extends Thread{
 
 
             String messageFromClient =null;
+            String messageToClientSign="";
+            String messageToClientTrue="";
             String messageToClient="";
 
             String[] messageFromClient1 =null;
@@ -65,7 +68,10 @@ public class ServiceThread extends Thread{
                 System.out.println("发送的信息："+messageToClient);
                 //messageToClient=gbEncoding(messageToClient);
                 //RSAPublicKey pubKey = LIBRARY
-                messageToClient = encryptByPublicKey(messageToClient, pubkey3);
+                //签名
+                messageToClientTrue = encryptByPublicKey(messageToClient, pubkey3);
+                messageToClientSign=encryptByPublicKey(messageToClientTrue,pubkey3);
+                messageToClient=supplement(5,String.valueOf(messageToClientSign.length()))+messageToClientSign+messageToClientTrue;
                 OutputStream outputStream = socket.getOutputStream();
                 socket.getOutputStream().write(messageToClient.getBytes("UTF-8"));
             }
