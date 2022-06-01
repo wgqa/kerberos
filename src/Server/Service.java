@@ -13,6 +13,7 @@ import java.util.Arrays;
 
 import static RSA.RSAUtils.encryptByPublicKey;
 import static RSA.RSAUtils.pubKey0;
+import static RSA.getKey.pubkey3;
 import static Server.StringToUnicode.gbEncoding;
 import static Server.StringToUnicode.stringToUnicode;
 
@@ -79,7 +80,7 @@ public class Service {
                 System.out.println("发送的信息："+messageToClient);
                 messageToClient=gbEncoding(messageToClient);
                 //RSAPublicKey pubKey = LIBRARY
-                messageToClient = encryptByPublicKey(messageToClient, pubKey0);
+                messageToClient = encryptByPublicKey(messageToClient, pubkey3);
                 OutputStream outputStream = socket.getOutputStream();
                 socket.getOutputStream().write(messageToClient.getBytes("UTF-8"));
             }

@@ -23,6 +23,7 @@ import static Client.UnicodeToString.decodeUnicode;
 import static Client.UnicodeToString.unicodeToString;
 import static RSA.RSAUtils.decryptByPrivateKey;
 import static RSA.RSAUtils.priKey0;
+import static RSA.getKey.prikey3;
 
 public class LIBRARY extends JFrame {
     private JPanel contentPane;  //私有成员
@@ -146,7 +147,7 @@ public class LIBRARY extends JFrame {
                         if(Client.send(requestToServer,socket)){
                             System.out.println("成功发送给service"+requestToServer+"\n");
                             messageFromSever = Client.receive(socket);
-                            message = decryptByPrivateKey(messageFromSever, priKey0);
+                            message = decryptByPrivateKey(messageFromSever, prikey3);
                             message=decodeUnicode(messageFromSever);
                             System.out.println("从service收到的消息"+message);
                             socket.close();
