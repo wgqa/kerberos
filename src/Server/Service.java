@@ -78,7 +78,7 @@ public class Service {
                     messageToClient="没找符合要求的书";
                 }
                 System.out.println("发送的信息："+messageToClient);
-                messageToClient=gbEncoding(messageToClient);
+                //messageToClient=gbEncoding(messageToClient);
                 //RSAPublicKey pubKey = LIBRARY
                 messageToClient = encryptByPublicKey(messageToClient, pubkey3);
                 OutputStream outputStream = socket.getOutputStream();

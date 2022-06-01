@@ -148,7 +148,7 @@ public class LIBRARY extends JFrame {
                             System.out.println("成功发送给service"+requestToServer+"\n");
                             messageFromSever = Client.receive(socket);
                             message = decryptByPrivateKey(messageFromSever, prikey3);
-                            message=decodeUnicode(messageFromSever);
+                            //message=decodeUnicode(messageFromSever);
                             System.out.println("从service收到的消息"+message);
                             socket.close();
                         };
@@ -162,7 +162,7 @@ public class LIBRARY extends JFrame {
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
-                    bookInfo.append("密文:"+messageFromSever);
+                    bookInfo.append("密文:"+messageFromSever+"\n");
                     bookInfo.append(message);
                 }
 
