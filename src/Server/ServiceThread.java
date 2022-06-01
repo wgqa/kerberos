@@ -71,7 +71,9 @@ public class ServiceThread extends Thread{
                 //签名
                 messageToClientTrue = encryptByPublicKey(messageToClient, pubkey3);
                 messageToClientSign=encryptByPublicKey(messageToClientTrue,pubkey3);
-                messageToClient=supplement(5,String.valueOf(messageToClientSign.length()))+messageToClientSign+messageToClientTrue;
+                messageToClient=supplement(6,String.valueOf(messageToClientSign.length()))+messageToClientSign+messageToClientTrue;
+                System.out.println("sign的长度为"+messageToClientSign.length());
+                System.out.println("sign的补齐为"+supplement(6,String.valueOf(messageToClientSign.length())));
                 OutputStream outputStream = socket.getOutputStream();
                 socket.getOutputStream().write(messageToClient.getBytes("UTF-8"));
             }

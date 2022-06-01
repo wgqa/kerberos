@@ -148,10 +148,10 @@ public class LIBRARY extends JFrame {
                             System.out.println("成功发送给service"+requestToServer+"\n");
                             messageFromSever = Client.receive(socket);
                             //substring 包括头 不包括尾
-                            String head = messageFromSever.substring(0,4);
+                            String head = messageFromSever.substring(0,6);
                             System.out.println("head长度为"+head);
-                            String signMessage = messageFromSever.substring(4, 4+Integer.parseInt(head));//加密的签名
-                            String trueMessage =messageFromSever.substring(4+Integer.parseInt(head));//加密的报文
+                            String signMessage = messageFromSever.substring(6, 6+Integer.parseInt(head));//加密的签名
+                            String trueMessage =messageFromSever.substring(6+Integer.parseInt(head));//加密的报文
 
                             String deSignMessage=decryptByPrivateKey(signMessage, prikey3);//签名解密
                             if(deSignMessage.equals(trueMessage)){
